@@ -28,8 +28,16 @@ def sym_idx(x, y, n, with_diagonal=True):
 
 
 class SymmetricMatrix(object):
-  
+  """Efficient symmetric matrix stored as a numpy array.
+  """
   def __init__(self, n=None, store_diagonal=True, dtype=numpy.float):
+    """Initialize matrix.
+
+    Args:
+      n: int of matrix dimension
+      store_diagonal: bool if to store the matrix diagonal
+      dtype: obj of numpy datatype of matrix
+    """
     assert n is not None
     self.n = n
     self.dtype = dtype
