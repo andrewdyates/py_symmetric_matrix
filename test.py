@@ -36,7 +36,7 @@ class TestIdx(unittest.TestCase):
     s = [(0,0,0), (0,1,1), (0,2,2), (0,3,3), (1,1,4), (1,2,5), (1,3,6), (2,2,7), (2,3,8), (3,3,9)]
     n = 4
     for x,y,i in s:
-      self.assertEqual(sym_idx(x,y,n), i)
+      self.assertEqual(sym_idx(x,y,n, with_diagonal=True), i)
 
   def test_idx_no_diagonal(self):
     """Verify index values for 4x4 matrix without diagonal."""

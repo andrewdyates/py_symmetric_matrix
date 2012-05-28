@@ -1,9 +1,14 @@
 #!/usr/bin/python
-"""Efficient representation of a symmetric matrix using pylab."""
+"""Efficient representation of a symmetric matrix using pylab.
+
+Also see: 
+  scipy.spatial.distance.squareform
+"""
 import numpy
 
 
-def sym_idx(x, y, n, with_diagonal=True):
+
+def sym_idx(x, y, n, with_diagonal=False):
   """Return symmetric array index.
 
   Args:
@@ -24,6 +29,8 @@ def sym_idx(x, y, n, with_diagonal=True):
     n -= 1
     y -= 1
   return (2*n-x-1)*x/2 + y
+
+
 
 
 
