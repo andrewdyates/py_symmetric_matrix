@@ -3,9 +3,10 @@
 
 Also see: 
   scipy.spatial.distance.squareform
+
+TODO: add variable name rankings to integer rankings
 """
 import numpy
-
 
 
 def sym_idx(x, y, n, with_diagonal=False):
@@ -19,7 +20,7 @@ def sym_idx(x, y, n, with_diagonal=False):
   Returns:
     int of array index in symmetric matrix implementation
   """
-  assert all((x<n, y<n, x>=0, y>=0))
+  assert all((x<n, y<n, x>=0, y>=0)), "x:%d, y:%d, n:%d" % (x, y, n)
   # x is always <= y
   if x > y:
     x, y = y, x
@@ -36,6 +37,7 @@ def sym_idx(x, y, n, with_diagonal=False):
 
 class SymmetricMatrix(object):
   """Efficient symmetric matrix stored as a numpy array.
+  Initializes all values to zero.
   """
   def __init__(self, n=None, store_diagonal=True, dtype=numpy.float):
     """Initialize matrix.
@@ -65,3 +67,18 @@ class SymmetricMatrix(object):
     if _idx is None:
       idx = sym_idx(x, y, self.n, self.store_diagonal)
     self._m[idx] = value
+
+
+class NamedSymmetricMatrix(SymmetricMatrix):
+  """SymmetricMatrix with named rows and columns."""
+  def __init__(self, var_list, **kwds):
+    self.vars = dict([(name, idx) for idx, name in enumerate(var_list)])
+    super(NamedSymmetricMatrix, self).__init__(**kwds)
+    
+  def get(self, x, y, _idx=None):
+    i, j = self.vars[x], self.vars[y]
+    return super(NamedSymmetricMatrix, self).get(i, j, _idx=_idx)
+
+  def set(self, x, y, value, _idx=None):
+    i, j = self.vars[x], self.vars[y]
+    super(NamedSymmetricMatrix, self).set(i, j, value, _idx=_idx)
