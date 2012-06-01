@@ -40,7 +40,6 @@ def inv_sym_idx(idx, n, with_diagonal=False):
   Returns:
     (x,y) of 0-indexed variable index.
   """
-  assert type(n) == type(idx) == int
   
   if not with_diagonal:
     n -= 1
