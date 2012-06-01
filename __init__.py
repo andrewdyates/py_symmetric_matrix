@@ -1,12 +1,11 @@
 #!/usr/bin/python
+from __future__ import division
 """Efficient representation of a symmetric matrix using pylab.
 
 Also see: 
   scipy.spatial.distance.squareform
-
-TODO: add variable name rankings to integer rankings
 """
-import numpy
+import numpy as np
 
 
 def sym_idx(x, y, n, with_diagonal=False):
@@ -29,23 +28,47 @@ def sym_idx(x, y, n, with_diagonal=False):
     assert x != y
     n -= 1
     y -= 1
-  return (2*n-x-1)*x/2 + y
+  return (2*n-x-1)*x//2 + y
 
+def inv_sym_idx(idx, n, with_diagonal=False):
+  """Return (x,y) given linear index to symmetric matrix (invert sym_idx).
 
+  Args:
+    idx: int of index to invert
+    n: int size of matrix (number of variables)
+    with_diagonal: include diagonal in matrix
+  Returns:
+    (x,y) of 0-indexed variable index.
+  """
+  assert type(n) == type(idx) == int
+  
+  if not with_diagonal:
+    n -= 1
+  c = 2*idx - n*(n+1)
+  # quadradic equation to solve for q
+  i = (-1 + np.sqrt(1-4*c))/2
+  i = int(np.ceil(i))
+  
+  x = n-i
+  y = idx - (n*(n+1)//2 - i*(i+1)//2) + x
+  if not with_diagonal:
+    y += 1
+  return x,y
+  
 
 
 
 class SymmetricMatrix(object):
-  """Efficient symmetric matrix stored as a numpy array.
+  """Efficient symmetric matrix stored as a np array.
   Initializes all values to zero.
   """
-  def __init__(self, n=None, store_diagonal=True, dtype=numpy.float):
+  def __init__(self, n=None, store_diagonal=True, dtype=np.float):
     """Initialize matrix.
 
     Args:
       n: int of matrix dimension
       store_diagonal: bool if to store the matrix diagonal
-      dtype: obj of numpy datatype of matrix
+      dtype: obj of np datatype of matrix
     """
     assert n is not None
     self.n = n
@@ -56,7 +79,7 @@ class SymmetricMatrix(object):
     if not store_diagonal:
       self.n_entries -= self.n
       
-    self._m = numpy.zeros(self.n_entries, dtype=dtype)
+    self._m = np.zeros(self.n_entries, dtype=dtype)
 
   def get(self, x, y, _idx=None):
     if _idx is None:
