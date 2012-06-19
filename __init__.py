@@ -61,12 +61,13 @@ class SymmetricMatrix(object):
   """Efficient symmetric matrix stored as a np array.
   Initializes all values to zero.
   """
-  def __init__(self, n=None, store_diagonal=True, dtype=np.float):
+  def __init__(self, n=None, store_diagonal=True, matrix=None, dtype=np.float):
     """Initialize matrix.
 
     Args:
       n: int of matrix dimension
       store_diagonal: bool if to store the matrix diagonal
+      matrix: object of np.array to use rather than new zero matrix
       dtype: obj of np datatype of matrix
     """
     assert n is not None
@@ -77,8 +78,11 @@ class SymmetricMatrix(object):
     self.n_entries = (self.n) * (self.n+1) / 2
     if not store_diagonal:
       self.n_entries -= self.n
-      
-    self._m = np.zeros(self.n_entries, dtype=dtype)
+
+    if matrix is None:
+      self._m = np.zeros(self.n_entries, dtype=dtype)
+    else:
+      self._m = matrix
 
   def get(self, x, y, _idx=None):
     if _idx is None:
@@ -93,9 +97,10 @@ class SymmetricMatrix(object):
 
 class NamedSymmetricMatrix(SymmetricMatrix):
   """SymmetricMatrix with named rows and columns."""
+  
   def __init__(self, var_list, **kwds):
     self.vars = dict([(name, idx) for idx, name in enumerate(var_list)])
-    super(NamedSymmetricMatrix, self).__init__(**kwds)
+    super(NamedSymmetricMatrix, self).__init__(n=len(var_list), **kwds)
     
   def get(self, x, y, _idx=None):
     i, j = self.vars[x], self.vars[y]
