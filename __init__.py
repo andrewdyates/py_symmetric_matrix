@@ -40,10 +40,10 @@ def inv_sym_idx(idx, n, with_diagonal=False):
   Returns:
     (x,y) of 0-indexed variable index.
   """
-  
   if not with_diagonal:
     n -= 1
   c = 2*idx - n*(n+1)
+  assert c <= 0
   # quadradic equation to solve for q
   i = (-1 + np.sqrt(1-4*c))/2
   i = int(np.ceil(i))
