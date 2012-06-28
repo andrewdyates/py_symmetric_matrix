@@ -84,14 +84,22 @@ class SymmetricMatrix(object):
     else:
       self._m = matrix
 
-  def get(self, x, y, _idx=None):
+  def get(self, x=None, y=None, _idx=None):
     if _idx is None:
       idx = sym_idx(x, y, self.n, self.store_diagonal)
+    else:
+      assert x is None and y is None
+      idx = _idx
     return self._m[idx]
 
-  def set(self, x, y, value, _idx=None):
+  def set(self, x=None, y=None, value=None, _idx=None):
+    if value is None:
+      value = 1
     if _idx is None:
       idx = sym_idx(x, y, self.n, self.store_diagonal)
+    else:
+      assert x is None and y is None
+      idx = _idx
     self._m[idx] = value
 
 
