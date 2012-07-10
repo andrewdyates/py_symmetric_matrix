@@ -106,7 +106,8 @@ class SymmetricMatrix(object):
 class NamedSymmetricMatrix(SymmetricMatrix):
   """SymmetricMatrix with named rows and columns."""
   
-  def __init__(self, var_list, **kwds):
+  def __init__(self, var_list=None, **kwds):
+    assert var_list is not None
     self.vars = dict([(name, idx) for idx, name in enumerate(var_list)])
     super(NamedSymmetricMatrix, self).__init__(n=len(var_list), **kwds)
     
@@ -114,6 +115,11 @@ class NamedSymmetricMatrix(SymmetricMatrix):
     i, j = self.vars[x], self.vars[y]
     return super(NamedSymmetricMatrix, self).get(i, j, _idx=_idx)
 
+  def get_idx(self, x, y):
+    i, j = self.vars[x], self.vars[y]
+    return inv_sym_idx(i, j, self.n)
+
   def set(self, x, y, value, _idx=None):
     i, j = self.vars[x], self.vars[y]
     super(NamedSymmetricMatrix, self).set(i, j, value, _idx=_idx)
+  
