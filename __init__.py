@@ -111,15 +111,27 @@ class NamedSymmetricMatrix(SymmetricMatrix):
     self.vars = dict([(name, idx) for idx, name in enumerate(var_list)])
     super(NamedSymmetricMatrix, self).__init__(n=len(var_list), **kwds)
     
-  def get(self, x, y, _idx=None):
-    i, j = self.vars[x], self.vars[y]
-    return super(NamedSymmetricMatrix, self).get(i, j, _idx=_idx)
+  def get(self, x=None, y=None, _idx=None):
+    assert bool(_idx is None) != bool(x is None and y is None)
+    if _idx is None:
+      assert self.store_diagonal or x != y
+      i, j = self.vars[x], self.vars[y]
+      return super(NamedSymmetricMatrix, self).get(x=i, y=j, _idx=_idx)
+    else:
+      return super(NamedSymmetricMatrix, self).get(_idx=_idx)
 
   def get_idx(self, x, y):
+    assert self.store_diagonal or x != y
     i, j = self.vars[x], self.vars[y]
-    return inv_sym_idx(i, j, self.n)
+    return sym_idx(i, j, self.n, with_diagonal=self.store_diagonal)
 
-  def set(self, x, y, value, _idx=None):
-    i, j = self.vars[x], self.vars[y]
-    super(NamedSymmetricMatrix, self).set(i, j, value, _idx=_idx)
+  def set(self, x=None, y=None, value=None, _idx=None):
+    assert bool(_idx is None) != bool(x is None and y is None)
+    if _idx is None:
+      assert self.store_diagonal or x != y
+      i, j = self.vars[x], self.vars[y]
+      super(NamedSymmetricMatrix, self).set(x=i, y=j, value=value)
+    else:
+      super(NamedSymmetricMatrix, self).set(value=value, _idx=_idx)
+      
   

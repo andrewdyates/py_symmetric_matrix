@@ -6,6 +6,37 @@ DIAG = [(0,0,0), (0,1,1), (0,2,2), (0,3,3), (1,1,4), (1,2,5), (1,3,6), (2,2,7), 
 NO_DIAG = [(0,1,0), (0,2,1), (0,3,2), (1,2,3), (1,3,4), (2,3,5)]
 
 class TestIdx(unittest.TestCase):
+
+  def test_named_withdiag(self):
+    varlist=['a', 'b', 'c']
+    N = NamedSymmetricMatrix(var_list=varlist, store_diagonal=True)
+    self.assertEqual(N.get_idx('a', 'b'), N.get_idx('b', 'a'))
+    N.set('a', 'b', value=2)
+    self.assertEqual(N.get('a','b'), 2)
+    self.assertEqual(N.get('b','a'), N.get('a','b'))
+    i = N.get_idx('a', 'b')
+    N.set(_idx=i, value=3)
+    self.assertEqual(N.get('a','b'), 3)
+    self.assertEqual(N.get('b','a'), N.get('a','b'))
+    N.set(_idx=i+1, value=5)
+    self.assertEqual(N.get('a','b'), 3)
+    self.assertEqual(N.get('b','a'), N.get('a','b'))
+
+  def test_named_nodiag(self):
+    varlist=['a', 'b', 'c']
+    N = NamedSymmetricMatrix(var_list=varlist, store_diagonal=False)
+    self.assertEqual(N.get_idx('a', 'b'), N.get_idx('b', 'a'))
+    N.set('a', 'b', value=2)
+    self.assertEqual(N.get('a','b'), 2)
+    self.assertEqual(N.get('b','a'), N.get('a','b'))
+    i = N.get_idx('a', 'b')
+    N.set(_idx=i, value=3)
+    self.assertEqual(N.get('a','b'), 3)
+    self.assertEqual(N.get('b','a'), N.get('a','b'))
+    N.set(_idx=i+1, value=5)
+    self.assertEqual(N.get('a','b'), 3)
+    self.assertEqual(N.get('b','a'), N.get('a','b'))
+    
   
   def test_matrix(self):
     a = [1,2,3,4]
