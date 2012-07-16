@@ -5,6 +5,17 @@ import unittest
 DIAG = [(0,0,0), (0,1,1), (0,2,2), (0,3,3), (1,1,4), (1,2,5), (1,3,6), (2,2,7), (2,3,8), (3,3,9)]
 NO_DIAG = [(0,1,0), (0,2,1), (0,3,2), (1,2,3), (1,3,4), (2,3,5)]
 
+class TestKnownBadIndex(unittest.TestCase):
+  def test_known_bad_idx(self):
+    n = 22184
+    x,y= inv_sym_idx(22164, n)
+    self.assertEqual(x, 0)
+    self.assertEqual(y, 22165)
+    x,y= inv_sym_idx(22165, n)
+    self.assertEqual(x, 0)
+    self.assertEqual(y, 22166)
+
+
 class TestIdx(unittest.TestCase):
 
   def test_named_withdiag(self):
