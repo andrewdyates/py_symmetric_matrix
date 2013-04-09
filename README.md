@@ -2,7 +2,13 @@ py_symmetric_matrix
 ===================
 
 Efficient symmetric matrix using pylab in Python.
+Upper triangle, column then row enumeration.
 Supports efficient indexing by name.
+
+Vector form (without diagonal) is the same used by:
+scipy.spatial.distance.squareform
+Reconstitute full matrix from symmetric vector v like:
+M = squareform(v)
 
 
 CYTHON EXTENSION

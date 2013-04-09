@@ -23,7 +23,6 @@ def sym_idx(x, y, n, with_diagonal=False):
   # x is always <= y
   if x > y:
     x, y = y, x
-  # Formula derivation on page 33 of lab notebook 2
   if not with_diagonal:
     assert x != y
     n -= 1
